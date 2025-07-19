@@ -1,0 +1,83 @@
+@page "/doctor-add-movement"
+@inject HttpClient Http
+
+<PageTitle>Add Movement</PageTitle>
+
+<h3>Add a New Movement</h3>
+
+<div class="form-group">
+    <label>Name:</label>
+    <input type="text" @bind="name" class="form-control" />
+</div>
+<div class="form-group">
+    <label>Category:</label>
+    <select @bind="selectedCategoryId" class="form-control">
+        <option value="">-- Select Category --</option>
+        @foreach (var category in categories)
+        {
+            <option value="@category.Id">@category.Title</option>
+        }
+    </select>
+</div>
+<div class="form-group">
+    <label>GIF File:</label>
+    <InputFile onchange="OnInputFileChange" accept="image/gif" class="form-control" />
+</div>
+<button @onclick="SaveMovement" class="btn btn-primary">Save</button>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div>@message</div>
+}
+
+@code {
+    private string name = string.Empty;
+    private string? selectedCategoryId;
+    private IBrowserFile? gifFile;
+    private string message = string.Empty;
+    private List<Category> categories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await Http.GetFromJsonAsync<List<Category>>("api/tblCategory");
+    }
+
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        gifFile = e.File;
+    }
+
+    private async Task SaveMovement()
+    {
+        if (gifFile == null || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(selectedCategoryId))
+        {
+            message = "Please fill all fields and select a GIF file.";
+            return;
+        }
+
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent(name), "Name");
+        content.Add(new StringContent(selectedCategoryId), "CategoryID");
+        var stream = gifFile.OpenReadStream(maxAllowedSize: 10_000_000); // 10MB max
+        content.Add(new StreamContent(stream), "Gif", gifFile.Name);
+
+        var response = await Http.PostAsync("api/movements", content);
+        if (response.IsSuccessStatusCode)
+        {
+            message = "Movement saved successfully!";
+            name = string.Empty;
+            selectedCategoryId = null;
+            gifFile = null;
+        }
+        else
+        {
+            message = "Failed to save movement.";
+        }
+    }
+
+    public class Category
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+    }
+} 

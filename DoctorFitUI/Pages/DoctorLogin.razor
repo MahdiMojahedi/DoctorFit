@@ -1,0 +1,25 @@
+@page "/doctor-login"
+
+<PageTitle>Doctor Login</PageTitle>
+
+<h3>Doctor Login</h3>
+
+<div class="login-form">
+    <label>Email:</label>
+    <input type="email" @bind="doctorEmail" />
+    <br />
+    <label>Password:</label>
+    <input type="password" @bind="doctorPassword" />
+    <br />
+    <button @onclick="DoctorLoging">Login</button>
+</div>
+
+@code {
+    private string doctorEmail = string.Empty;
+    private string doctorPassword = string.Empty;
+
+    private void DoctorLoging()
+    {
+        // Add doctor login logic here
+    }
+} 

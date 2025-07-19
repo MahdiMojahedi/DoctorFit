@@ -1,0 +1,68 @@
+<nav class="modern-navbar">
+    <ul>
+        <li>
+            <a href="/movement-list" title="Movements">
+                <span class="material-icons">view_list</span>
+                <span class="nav-label">Movements</span>
+            </a>
+        </li>
+        <!-- Add more nav items here as needed -->
+    </ul>
+</nav>
+
+<style>
+.modern-navbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 80px;
+    background: linear-gradient(135deg, #4f8cff 0%, #235390 100%);
+    box-shadow: -2px 0 8px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+}
+.modern-navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+.modern-navbar li {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.modern-navbar a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 0;
+    width: 100%;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+.modern-navbar a:hover {
+    background: rgba(255,255,255,0.08);
+}
+.material-icons {
+    font-size: 2rem;
+    margin-bottom: 0.2rem;
+}
+.nav-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+</style>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 

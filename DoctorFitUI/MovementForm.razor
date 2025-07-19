@@ -1,0 +1,90 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components
+
+<div class="form-group">
+    <label>Name:</label>
+    <input type="text" @bind="Movement.Name" class="form-control" />
+</div>
+<div class="form-group">
+    <label>Category:</label>
+    <select @bind="Movement.CategoryID" class="form-control">
+        <option value="">-- Select Category --</option>
+        @foreach (var category in Categories)
+        {
+            <option value="@category.Id">@category.Title</option>
+        }
+    </select>
+</div>
+<div class="form-group">
+    <label>GIF File:</label>
+    <!-- Use Blazor's InputFile instead of HTML input for better handling -->
+    <InputFile OnChange="OnInputFileChange" accept="image/gif" class="form-control" />
+    @if (!string.IsNullOrEmpty(Movement.Gif) && Mode == "Update")
+    {
+        <div class="mt-2">
+            <span>Current GIF: </span>
+            <img src="@Movement.Gif" alt="Current GIF" style="max-width:100px;max-height:100px;" />
+        </div>
+    }
+</div>
+<button @onclick="HandleSave" class="btn btn-primary">
+    @((Mode == "Update") ? "Update" : "Save")
+</button>
+
+@if (!string.IsNullOrEmpty(Message))
+{
+    <div class="alert alert-info mt-2">@Message</div>
+}
+
+@code {
+    [Parameter] public MovementModel Movement { get; set; } = new();
+    [Parameter] public List<Category> Categories { get; set; } = new();
+    [Parameter] public EventCallback<(MovementModel, IBrowserFile?)> OnSave { get; set; }
+    [Parameter] public string Mode { get; set; } = "Insert";
+    [Parameter] public string Message { get; set; } = string.Empty;
+
+    private IBrowserFile? gifFile;
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        gifFile = e.File;
+        Message = string.Empty; // Clear previous messages
+    }
+
+    private async Task HandleSave()
+    {
+        if (string.IsNullOrEmpty(Movement.Name))
+        {
+            Message = "Name is required.";
+            return;
+        }
+
+        if (string.IsNullOrEmpty(Movement.CategoryID))
+        {
+            Message = "Category is required.";
+            return;
+        }
+
+        if (Mode == "Insert" && gifFile == null)
+        {
+            Message = "GIF file is required for new entries.";
+            return;
+        }
+
+        await OnSave.InvokeAsync((Movement, gifFile));
+    }
+
+    public class MovementModel
+    {
+        public string? ID { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? Gif { get; set; }
+        public string CategoryID { get; set; } = string.Empty;
+    }
+
+    public class Category
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+    }
+}

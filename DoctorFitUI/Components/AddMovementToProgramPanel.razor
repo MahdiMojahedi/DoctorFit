@@ -1,0 +1,130 @@
+@using Microsoft.AspNetCore.Components
+@inject HttpClient Http
+
+<div class="add-movement-panel">
+    <h4>Add Movement to Program</h4>
+    <div class="form-group">
+        <label>Set Number:</label>
+        <input type="number" @bind="setNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Rep Number:</label>
+        <input type="number" @bind="repNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Program:</label>
+        <select @bind="selectedProgramId" class="form-control">
+            <option value="">-- Select Program --</option>
+            @foreach (var program in programs)
+            {
+                <option value="@program.Id">@program.Title</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Day:</label>
+        <select @bind="selectedDayId" class="form-control">
+            <option value="">-- Select Day --</option>
+            @foreach (var day in programDays)
+            {
+                <option value="@day.Id">@day.Title</option>
+            }
+        </select>
+    </div>
+    <button @onclick="SaveMovementToProgram" class="btn btn-primary">Save</button>
+</div>
+
+@code {
+    [Parameter] public string MovementId { get; set; } = string.Empty;
+    [Parameter] public EventCallback OnSave { get; set; }
+
+    private int setNumber;
+    private int repNumber;
+    private string selectedProgramId = string.Empty;
+    private string selectedDayId = string.Empty;
+    private List<Program> programs = new();
+    private List<ProgramDay> programDays = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programs = await Http.GetFromJsonAsync<List<Program>>("api/tblProgram");
+        programDays = await Http.GetFromJsonAsync<List<ProgramDay>>("api/tblProgramDays");
+    }
+
+    private async Task SaveMovementToProgram()
+    {
+        if (setNumber <= 0 || repNumber <= 0 || string.IsNullOrEmpty(selectedProgramId) || string.IsNullOrEmpty(selectedDayId))
+        {
+            // Show error message
+            return;
+        }
+
+        var response = await Http.PostAsJsonAsync("api/tblProgramDayMovements", new
+        {
+            MovementId,
+            SetNumber = setNumber,
+            RepNumber = repNumber,
+            ProgramId = selectedProgramId,
+            DayId = selectedDayId
+        });
+
+        if (response.IsSuccessStatusCode)
+        {
+            await OnSave.InvokeAsync();
+        }
+    }
+
+    public class Program
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+    }
+
+    public class ProgramDay
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+    }
+}
+
+<style>
+.add-movement-panel {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    width: 300px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+.form-control {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.btn-primary {
+    width: 100%;
+    padding: 0.75rem;
+    background: #4f8cff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-primary:hover {
+    background: #235390;
+}
+</style> 

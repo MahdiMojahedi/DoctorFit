@@ -1,0 +1,63 @@
+﻿@page "/register"
+@using DoctorFitUI.Models
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<PageTitle>Register</PageTitle>
+
+<h3>Register</h3>
+
+<div class="form-group">
+    <label>Email:</label>
+    <input type="email" @bind="model.Email" class="form-control" />
+</div>
+<div class="form-group">
+    <label>Password:</label>
+    <input type="password" @bind="model.Password" class="form-control" />
+</div>
+<div class="form-group">
+    <label>Confirm Password:</label>
+    <input type="password" @bind="confirmPassword" class="form-control" />
+</div>
+<button @onclick="Registery" class="btn btn-primary">Register</button>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-info">@message</div>
+}
+
+@code {
+    private RegisterModel model = new();
+    private string confirmPassword = string.Empty;
+    private string message = string.Empty;
+
+    private async Task Registery()
+    {
+        if (string.IsNullOrWhiteSpace(model.Email) ||
+            string.IsNullOrWhiteSpace(model.Password) ||
+            string.IsNullOrWhiteSpace(confirmPassword))
+        {
+            message = "Please fill all fields.";
+            return;
+        }
+
+        if (model.Password != confirmPassword)
+        {
+            message = "Passwords do not match.";
+            return;
+        }
+
+        var response = await Http.PostAsJsonAsync("api/register", model);
+        if (response.IsSuccessStatusCode)
+        {
+            message = "✅ Registration successful! Redirecting...";
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            var error = await response.Content.ReadAsStringAsync();
+            message = $"❌ Registration failed: {error}";
+        }
+    }
+}

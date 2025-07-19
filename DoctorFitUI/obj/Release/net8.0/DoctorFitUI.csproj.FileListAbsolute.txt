@@ -1,0 +1,7 @@
+D:\دکترفیت\DoctorFitUI\obj\Release\net8.0\DoctorFitUI.csproj.AssemblyReference.cache
+D:\دکترفیت\DoctorFitUI\obj\Release\net8.0\rpswa.dswa.cache.json
+D:\دکترفیت\DoctorFitUI\obj\Release\net8.0\DoctorFitUI.GeneratedMSBuildEditorConfig.editorconfig
+D:\دکترفیت\DoctorFitUI\obj\Release\net8.0\DoctorFitUI.AssemblyInfoInputs.cache
+D:\دکترفیت\DoctorFitUI\obj\Release\net8.0\DoctorFitUI.AssemblyInfo.cs
+D:\دکترفیت\DoctorFitUI\obj\Release\net8.0\DoctorFitUI.csproj.CoreCompileInputs.cache
+D:\دکترفیت\DoctorFitUI\obj\Release\net8.0\DoctorFitUI.MvcApplicationPartsAssemblyInfo.cache

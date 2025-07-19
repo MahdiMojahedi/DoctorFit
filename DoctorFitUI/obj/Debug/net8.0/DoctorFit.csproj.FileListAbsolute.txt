@@ -1,0 +1,14 @@
+C:\دکترفیت\DoctorFit\obj\Debug\net8.0\DoctorFit.csproj.AssemblyReference.cache
+C:\دکترفیت\DoctorFit\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\دکترفیت\DoctorFit\obj\Debug\net8.0\DoctorFit.GeneratedMSBuildEditorConfig.editorconfig
+C:\دکترفیت\DoctorFit\obj\Debug\net8.0\DoctorFit.AssemblyInfoInputs.cache
+C:\دکترفیت\DoctorFit\obj\Debug\net8.0\DoctorFit.AssemblyInfo.cs
+C:\دکترفیت\DoctorFit\obj\Debug\net8.0\DoctorFit.csproj.CoreCompileInputs.cache
+C:\دکترفیت\DoctorFit\obj\Debug\net8.0\DoctorFit.MvcApplicationPartsAssemblyInfo.cache
+D:\DoctorFit\obj\Debug\net8.0\DoctorFit.csproj.AssemblyReference.cache
+D:\DoctorFit\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\DoctorFit\obj\Debug\net8.0\DoctorFit.GeneratedMSBuildEditorConfig.editorconfig
+D:\DoctorFit\obj\Debug\net8.0\DoctorFit.AssemblyInfoInputs.cache
+D:\DoctorFit\obj\Debug\net8.0\DoctorFit.AssemblyInfo.cs
+D:\DoctorFit\obj\Debug\net8.0\DoctorFit.csproj.CoreCompileInputs.cache
+D:\DoctorFit\obj\Debug\net8.0\DoctorFit.MvcApplicationPartsAssemblyInfo.cache

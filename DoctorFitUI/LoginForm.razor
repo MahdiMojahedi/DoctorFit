@@ -1,0 +1,49 @@
+﻿@page "/login"
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Login</PageTitle>
+
+<div class="login-wrapper">
+    <AuthorizeView>
+        <Authorized>
+            <h3>👤 Welcome, @context.User.Identity?.Name</h3>
+
+            <p><strong>Email:</strong> @context.User.FindFirst(c => c.Type == "email")?.Value</p>
+            <p><strong>Roles:</strong>
+                @foreach (var role in context.User.FindAll("role"))
+                {
+                    <span class="badge bg-success me-1">@role.Value</span>
+                }
+            </p>
+
+            @if (context.User.HasClaim(c => c.Type == "picture"))
+            {
+                <img src="@context.User.FindFirst("picture")?.Value"
+                     alt="Profile Picture"
+                     style="max-width: 100px; border-radius: 50%;" />
+            }
+
+            <button class="btn btn-danger mt-3" @onclick="Logout">Logout</button>
+        </Authorized>
+
+        <NotAuthorized>
+            <h3>🔐 Sign in to DoctorFit</h3>
+            <button class="btn btn-primary" @onclick="BeginLogin">Login with DoctorFit ID</button>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+@code {
+    private void BeginLogin()
+    {
+        Navigation.NavigateTo("authentication/login");
+    }
+
+    private async Task Logout()
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+}
